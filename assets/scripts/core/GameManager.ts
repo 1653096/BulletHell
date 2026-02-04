@@ -8,7 +8,7 @@ const { ccclass } = _decorator;
 export class GameManager extends Component {
     static instance: GameManager;
 
-    state: GameState = GameState.Playing;
+    state: GameState = GameState.GameOver;
     elapsedTime = 0;
     readonly MAX_TIME = 60;
 
@@ -17,8 +17,9 @@ export class GameManager extends Component {
     }
 
     startGame() {
-        this.state = GameState.Playing;
+        console.log("GAME START")
         this.elapsedTime = 0;
+        this.state = GameState.Playing;
         EventBus.emit('GAME_START');
     }
 

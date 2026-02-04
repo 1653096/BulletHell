@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3 } from 'cc';
+import { _decorator, Component, Node, PhysicsSystem2D, RigidBody2D, Vec2, Vec3 } from 'cc';
 import { PlayerConfig } from '../config/PlayerConfig';
 import { Entity } from './Entity';
 const { ccclass, property } = _decorator;
@@ -10,28 +10,41 @@ export enum PlayerState {
 
 @ccclass('Player')
 export class Player extends Entity {
-    moveDir: Vec3;
+    moveDir: Vec2;
     state: PlayerState = PlayerState.STAND;
-    start() {
+    rb: RigidBody2D;
 
+    protected onLoad(): void {
+        PhysicsSystem2D.instance.enable = true;
+        this.rb = this.node.getComponent(RigidBody2D);
+    }
+    start() {
+        this.init(); // tmp
     }
 
-    update(dt: number) {
+    lateUpdate(dt: number) {
         if(this.state == PlayerState.MOVE) {
             if(this.moveDir.lengthSqr() == 0) return;
-            let delta = this.moveDir.clone().normalize().multiplyScalar(PlayerConfig.speed * dt);
-            this.node.translate(delta);
+
+            this.rb.linearVelocity = this.moveDir.clone()
+            .normalize()
+            .multiplyScalar(PlayerConfig.speed);
         }
     }
 
-    move(dir: Vec3) {
+    move(dir: Vec2) {
         this.moveDir = dir.clone();
         this.state = PlayerState.MOVE;
     }
 
     stand() {
         this.state = PlayerState.STAND;
-        this.moveDir = Vec3.ZERO;
+        this.moveDir = Vec2.ZERO;
+        this.rb.linearVelocity = Vec2.ZERO.clone();
+    }
+
+    init(){
+        this.initHealth(PlayerConfig.health);
     }
 
     onDie(): void {

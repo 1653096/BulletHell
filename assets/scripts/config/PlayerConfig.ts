@@ -1,5 +1,7 @@
 export const PlayerConfig = {
-    speed : 400
+    health: 100,
+    speed : 20,
+    hitDamage: 0
 }
 
 

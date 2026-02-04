@@ -22,8 +22,7 @@ export class InputSystem extends Component {
         const v = event.getDelta().clone();
         v.normalize();
 
-        let dir = new Vec3(v.x, v.y, 0)
-        this.player.move(dir);
+        this.player.move(v);
     }
 
     onTouchEnd() {
