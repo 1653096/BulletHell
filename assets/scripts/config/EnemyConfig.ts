@@ -8,7 +8,7 @@ export const EnemyConfig = {
         moveSpeed: 0,
         hitDamage: 0,
         health: 20,
-        bulletDamage: 30,
+        bulletDamage: 10,
         fireRate: 1.5
     }
     

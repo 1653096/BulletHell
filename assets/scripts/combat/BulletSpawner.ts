@@ -18,13 +18,15 @@ export class BulletSpawner extends Component {
     private playerPool!: ObjectPool;
     private enemyPool!: ObjectPool;
 
+    private activeBullet: Set<Bullet> = new Set();
+
     onLoad() {
         BulletSpawner.instance = this;
 
         this.playerPool = new ObjectPool(
             this.playerBulletPrefab,
             this.bulletSocket,
-            20
+            10
         );
 
         this.enemyPool = new ObjectPool(
@@ -36,12 +38,14 @@ export class BulletSpawner extends Component {
         EventBus.on('GAME_OVER', this.onGameOver.bind(this));
     }
 
-    spawnPlayerBullet(pos: Vec3, dir: Vec3) {
+    spawnPlayerBullet(pos: Vec3, dir: Vec3, speed: number, damage: number) {
         const node = this.playerPool.spawn();
         node.setWorldPosition(pos);
 
         const bullet = node.getComponent(Bullet)!;
-        bullet.fire(dir, 10, 1);
+        bullet.fire(dir, speed, damage);
+
+        this.activeBullet.add(bullet);
     }
 
     spawnEnemyBullet(pos: Vec3, targetPos: Vec3, speed: number, damage: number) {
@@ -51,6 +55,8 @@ export class BulletSpawner extends Component {
         const dir = targetPos.clone().subtract(pos).normalize();
         const bullet = node.getComponent(Bullet)!;
         bullet.fire(dir, speed, damage);
+
+        this.activeBullet.add(bullet);
     }
 
     despawn(bullet: Node) {
@@ -62,11 +68,16 @@ export class BulletSpawner extends Component {
         } else {
             this.enemyPool.despawn(node);
         }
+
+        this.activeBullet.delete(node.getComponent(Bullet));
     }
 
     private onGameOver() {
 
-        // Không spawn thêm nữa
-        // Bullet tự dừng update nhờ GameState
+        this.activeBullet.forEach(bullet => {
+            bullet.despawn();
+        });
+
+        this.activeBullet.clear();
     }
 }

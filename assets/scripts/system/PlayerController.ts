@@ -1,10 +1,9 @@
 import { _decorator, Component, EventTouch, Node, NodeEventType, Vec2, Vec3 } from 'cc';
 import { Player } from '../entity/Player';
-import { MovementSystem } from './MovementSystem';
 const { ccclass, property } = _decorator;
 
-@ccclass('InputSystem')
-export class InputSystem extends Component {
+@ccclass('PlayerController')
+export class PlayerController extends Component {
     @property(Player) player: Player = null;
     @property(Node) touchRegion: Node = null;
 

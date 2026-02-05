@@ -5,6 +5,7 @@ import { EnemyConfig } from '../config/EnemyConfig';
 import { Player } from '../entity/Player';
 import { PlayerConfig } from '../config/PlayerConfig';
 import { BulletConfig } from '../config/BulletConfig';
+import { EnemySpawner } from '../system/EnemySpawner';
 
 const { ccclass } = _decorator;
 
@@ -46,5 +47,10 @@ export class ShootingEnemy extends EnemyBase {
             this.player.getComponent(Player).takeDamage(EnemyConfig.shootingEnemy.hitDamage);
             this.takeDamage(PlayerConfig.hitDamage)
         }
+    }
+
+    onDie(): void {
+        super.onDie();
+        EnemySpawner.instance.despawn(this.node);
     }
 }

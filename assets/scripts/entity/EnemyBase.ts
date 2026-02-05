@@ -3,7 +3,6 @@ import { Entity } from '../entity/Entity';
 import { GameManager } from '../core/GameManager';
 import { GameState } from '../core/GameState';
 import { EventBus } from '../core/EventBus';
-import { EnemyConfig } from '../config/EnemyConfig';
 
 const { ccclass } = _decorator;
 
@@ -63,8 +62,6 @@ export abstract class EnemyBase extends Entity {
 
     onDie() {
         this.isActive = false;
-        this.node.active = false;
-        // Có thể trả về pool ở đây
     }
 
     protected abstract updateAI(dt: number): void;

@@ -4,6 +4,9 @@ import { GameState } from '../core/GameState';
 import { BulletSpawner } from './BulletSpawner';
 import { BulletConfig } from '../config/BulletConfig';
 import { Player } from '../entity/Player';
+import { Entity } from '../entity/Entity';
+import { EnemyBase } from '../entity/EnemyBase';
+import { PhysicsGroup } from '../system/PhysicGroup';
 
 const { ccclass } = _decorator;
 
@@ -52,12 +55,29 @@ export class Bullet extends Component {
         BulletSpawner.instance.despawn(this.node);
     }
 
-    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.group == 8 || otherCollider.group == 2 /* WALL */) {
-            if(otherCollider.group == 2) {
-                otherCollider.getComponent(Player).takeDamage(this.damage);
-            }
+    onBeginContact(self: Collider2D, other: Collider2D, contact: IPhysics2DContact | null) {
+        const otherGroup = other.group;
+        const selfGroup = self.group;
+
+        if (otherGroup === PhysicsGroup.WALL) {
             this.despawn();
+            return;
         }
+
+        if (selfGroup === PhysicsGroup.ENEMY_BULLET && otherGroup === PhysicsGroup.PLAYER) {
+            const player = other.getComponent(Player);
+            player?.takeDamage(this.damage);
+            this.despawn();
+            return;
+        }
+
+        if (selfGroup === PhysicsGroup.PLAYER_BULLET && otherGroup === PhysicsGroup.ENEMY) {
+            const enemy = other.getComponent(EnemyBase as any) as EnemyBase;
+            if (enemy) {
+                enemy.takeDamage(this.damage);
+                this.despawn();
+            }
     }
+}
+
 }
