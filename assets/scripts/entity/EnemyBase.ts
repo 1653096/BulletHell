@@ -2,7 +2,7 @@ import { _decorator, Collider2D, Contact2DType, IPhysics2DContact, Node, RigidBo
 import { Entity } from '../entity/Entity';
 import { GameManager } from '../core/GameManager';
 import { GameState } from '../core/GameState';
-import { EventBus } from '../core/EventBus';
+import gameEvent, { EventType } from '../core/GameEvent';
 
 const { ccclass } = _decorator;
 
@@ -16,7 +16,7 @@ export abstract class EnemyBase extends Entity {
 
     onLoad() {
         this.rb = this.node.getComponent(RigidBody2D);
-        EventBus.on('GAME_OVER', this.onGameOver.bind(this));
+        gameEvent.on(EventType.GAME_OVER, this.onGameOver.bind(this));
 
         const collider = this.getComponent(Collider2D);
         if (!collider) return;
@@ -25,7 +25,7 @@ export abstract class EnemyBase extends Entity {
     }
 
     onDestroy() {
-        EventBus.off('GAME_OVER', this.onGameOver.bind(this));
+        gameEvent.off(EventType.GAME_OVER, this.onGameOver.bind(this));
     }
 
     init(player: Node, health: number, speed: number, fireRate?: number) {

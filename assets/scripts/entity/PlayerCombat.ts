@@ -29,7 +29,6 @@ export class PlayerCombat extends Component {
     }
 
     private shoot(target: EnemyBase) {
-        console.log("PLAYER SHOOT")
         let dir = target.node.worldPosition.subtract(this.node.worldPosition).normalize();
 
         BulletSpawner.instance.spawnPlayerBullet(

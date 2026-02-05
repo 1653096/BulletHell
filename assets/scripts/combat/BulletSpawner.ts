@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, Prefab, Vec3 } from 'cc';
 import { ObjectPool } from '../pool/ObjectPool';
 import { Bullet } from './Bullet';
-import { EventBus } from '../core/EventBus';
+import gameEvent, { EventType } from '../core/GameEvent';
 
 const { ccclass, property } = _decorator;
 
@@ -35,7 +35,7 @@ export class BulletSpawner extends Component {
             20
         );
 
-        EventBus.on('GAME_OVER', this.onGameOver.bind(this));
+        gameEvent.on(EventType.GAME_OVER, this.onGameOver, this);
     }
 
     spawnPlayerBullet(pos: Vec3, dir: Vec3, speed: number, damage: number) {

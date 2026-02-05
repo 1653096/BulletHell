@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, PhysicsSystem2D, RigidBody2D, Vec2, Vec3 } from 'cc';
 import { PlayerConfig } from '../config/PlayerConfig';
 import { Entity } from './Entity';
+import gameEvent, { EventType } from '../core/GameEvent';
 const { ccclass, property } = _decorator;
 
 export enum PlayerState {
@@ -48,7 +49,11 @@ export class Player extends Entity {
     }
 
     onDie(): void {
-        
+        gameEvent.emit(EventType.PLAYER_DEAD);
+    }
+
+    reset() {
+        this.init();
     }
 }
 

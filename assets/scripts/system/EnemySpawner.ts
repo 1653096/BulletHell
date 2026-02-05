@@ -1,13 +1,13 @@
-import { _decorator, Component, instantiate, Node, Prefab, Vec3 } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec3 } from 'cc';
 import { GameManager } from '../core/GameManager';
 import { GameState } from '../core/GameState';
 import { WaveConfig, EnemyType, WaveData } from '../config/WaveConfig';
 import { EnemyConfig } from '../config/EnemyConfig';
-import { EventBus } from '../core/EventBus';
 import { ChasingEnemy } from '../entity/ChasingEnemy';
 import { EnemyBase } from '../entity/EnemyBase';
 import { ShootingEnemy } from '../entity/ShootingEnemy';
 import { ObjectPool } from '../pool/ObjectPool';
+import gameEvent, { EventType } from '../core/GameEvent';
 
 
 const { ccclass, property } = _decorator;
@@ -35,7 +35,7 @@ export class EnemySpawner extends Component {
         EnemySpawner.instance = this;
         this.chasingEnemyPool = new ObjectPool(this.chasingEnemyPrefab, this.enemySocket, 10);
         this.shootingEnemyPool = new ObjectPool(this.shootingEnemyPrefab, this.enemySocket, 10);
-        EventBus.on('GAME_OVER', this.onGameOver.bind(this));
+        gameEvent.on(EventType.GAME_OVER, this.onGameOver, this);
     }
 
     update(dt: number) {

@@ -1,11 +1,13 @@
 import { _decorator, Component } from 'cc';
 import { GameState } from './GameState';
-import { EventBus } from './EventBus';
+import gameEvent, { EventType } from './GameEvent';
+import { Player } from '../entity/Player';
 
-const { ccclass } = _decorator;
-
+const { ccclass, property } = _decorator;
 @ccclass('GameManager')
 export class GameManager extends Component {
+    @property(Player) player!: Player;
+
     static instance: GameManager;
 
     state: GameState = GameState.GameOver;
@@ -14,13 +16,24 @@ export class GameManager extends Component {
 
     onLoad() {
         GameManager.instance = this;
+        gameEvent.on(EventType.REQUEST_START_GAME, this.onStartGame, this);
+        gameEvent.on(EventType.PLAYER_DEAD, this.onPlayerDead, this);
     }
 
-    startGame() {
-        console.log("GAME START")
+    onDestroy(): void {
+        gameEvent.off(EventType.REQUEST_START_GAME, this.onStartGame, this);
+        gameEvent.off(EventType.PLAYER_DEAD, this.onPlayerDead, this);
+    }
+
+    enterHome() {
+
+    }
+
+    onStartGame() {
         this.elapsedTime = 0;
+        this.player.reset();
         this.state = GameState.Playing;
-        EventBus.emit('GAME_START');
+        gameEvent.emit(EventType.GAME_START);
     }
 
     update(dt: number) {
@@ -37,7 +50,11 @@ export class GameManager extends Component {
         if (this.state === GameState.GameOver) return;
 
         this.state = GameState.GameOver;
-        EventBus.emit('GAME_OVER', playerAlive);
+        gameEvent.emit(EventType.GAME_OVER, playerAlive);
+    }
+
+    onPlayerDead() {
+        this.endGame(false);
     }
 
     isPlaying(): boolean {
