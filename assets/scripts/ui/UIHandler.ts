@@ -47,17 +47,16 @@ export class UIHandler extends Component {
         this.ingameUI.active = true;
     }
 
-    onEndGame(playerAlive: boolean) {
-        console.log("END GAME, player: ", playerAlive);
+    onEndGame(agrs: any[]) {
         this.ingameUI.active = false;
         this.endGameUI.active = true;
 
-        this.updateEndGameUI(playerAlive);
+        this.updateEndGameUI(agrs[0]);
     }
 
     updateEndGameUI(isWin: boolean) {
-        this.resLb.string = isWin == true ? "You win" : "You lose";
-        this.resLb.color = isWin == true ? new Color('00FF85') : new Color('FF0052');
+        this.resLb.string = isWin ? "You win" : "You lose";
+        this.resLb.color = isWin ? new Color('00FF85') : new Color('FF0052');
     }
 
 
