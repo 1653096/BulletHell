@@ -54,6 +54,7 @@ export class Player extends Entity {
 
     reset() {
         this.init();
+        this.node.setPosition(Vec3.ZERO);
     }
 }
 

@@ -2,6 +2,7 @@ import { _decorator, Component } from 'cc';
 import { GameState } from './GameState';
 import gameEvent, { EventType } from './GameEvent';
 import { Player } from '../entity/Player';
+import { ResourceHandler } from './ResourceHandler';
 
 const { ccclass, property } = _decorator;
 @ccclass('GameManager')
@@ -16,6 +17,7 @@ export class GameManager extends Component {
 
     onLoad() {
         GameManager.instance = this;
+        ResourceHandler.instance;
         gameEvent.on(EventType.REQUEST_START_GAME, this.onStartGame, this);
         gameEvent.on(EventType.PLAYER_DEAD, this.onPlayerDead, this);
     }

@@ -18,6 +18,7 @@ export class PlayerController extends Component {
     }
 
     onTouchMove(event: EventTouch) {
+        if(event.getDelta().lengthSqr() < 10) return;
         const v = event.getDelta().clone();
         v.normalize();
 

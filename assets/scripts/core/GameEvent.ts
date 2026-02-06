@@ -4,7 +4,8 @@ export enum EventType {
     GAME_START = "GAME_START",
     GAME_OVER = "GAME_OVER",
     REQUEST_START_GAME = "REQUEST_START_GAME",
-    PLAYER_DEAD = "PLAYER_DEAD"
+    PLAYER_DEAD = "PLAYER_DEAD",
+    SOUND_LOADED = "SOUND_LOADED"
 }
 export class GameEvent extends EventTarget {
     emit(type: EventType, ...agrs: any): void {

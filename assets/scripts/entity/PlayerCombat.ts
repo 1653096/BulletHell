@@ -5,6 +5,7 @@ import { PlayerConfig } from '../config/PlayerConfig';
 import { EnemyBase } from './EnemyBase';
 import { BulletSpawner } from '../combat/BulletSpawner';
 import { BulletConfig } from '../config/BulletConfig';
+import { AudioManager, SoundName } from '../core/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerCombat')
@@ -36,6 +37,8 @@ export class PlayerCombat extends Component {
             dir, 
             BulletConfig.speed, 
             PlayerConfig.bulletDamage);
+
+        AudioManager.instance.playSound(SoundName.SHOOT, 1.5);
     }
 }
 
