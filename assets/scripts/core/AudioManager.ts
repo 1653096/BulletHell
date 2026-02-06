@@ -1,4 +1,4 @@
-import { _decorator, assetManager, AudioSource, Component, Node } from 'cc';
+import { _decorator, AudioSource, Component, Node } from 'cc';
 import { ResourceHandler } from './ResourceHandler';
 import gameEvent, { EventType } from './GameEvent';
 const { ccclass, property } = _decorator;

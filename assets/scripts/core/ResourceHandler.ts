@@ -1,6 +1,6 @@
-import { _decorator, assetManager, AudioClip, Component, Node, resources } from 'cc';
+import { _decorator, AudioClip, resources } from 'cc';
 import gameEvent, { EventType } from './GameEvent';
-const { ccclass, property } = _decorator;
+const { ccclass } = _decorator;
 
 @ccclass('ResourceHandler')
 export class ResourceHandler{
